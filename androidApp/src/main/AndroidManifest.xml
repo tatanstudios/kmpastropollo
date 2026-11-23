@@ -8,6 +8,10 @@
     <!-- Android 13+: permiso para mostrar notificaciones (OneSignal lo pide al iniciar) -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- screenOrientation="portrait" hace que Play exija pantalla vertical como hardware;
+         se marca opcional para no excluir tablets, Chromebooks ni Android XR -->
+    <uses-feature android:name="android.hardware.screen.portrait" android:required="false" />
+
     <application
         android:name=".AstroApp"
         android:allowBackup="true"

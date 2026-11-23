@@ -22,12 +22,12 @@ import kotlinx.serialization.json.Json
  */
 object ApiConfig {
     //** LOCAL: php artisan serve --host=192.168.1.4 --port=8080
-    const val BASE_URL = "http://192.168.1.4:8080/api/"
-    const val URL_IMAGENES = "http://192.168.1.4:8080/storage/imagenes/"
+    //const val BASE_URL = "http://192.168.1.4:8080/api/"
+    //const val URL_IMAGENES = "http://192.168.1.4:8080/storage/imagenes/"
 
     //** SERVIDOR (producción)
-    // const val BASE_URL = "https://astropollo.tatancloud.com/api/"
-    // const val URL_IMAGENES = "https://astropollo.tatancloud.com/storage/imagenes/"
+     const val BASE_URL = "https://astropollo.tatancloud.com/api/"
+     const val URL_IMAGENES = "https://astropollo.tatancloud.com/storage/imagenes/"
 }
 
 /** JSON tolerante, igual de permisivo que Gson con las respuestas del backend Laravel. */

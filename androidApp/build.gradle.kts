@@ -23,7 +23,7 @@ android {
         applicationId = "com.tatanstudios.astropollocliente"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 11
+        versionCode = 13
         versionName = "3.0.0"
 
         // Google Maps: el manifest usa ${MAPS_API_KEY}
