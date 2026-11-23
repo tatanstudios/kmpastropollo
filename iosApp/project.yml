@@ -1,0 +1,72 @@
+# Proyecto Xcode generado con XcodeGen (https://github.com/yonaskolb/XcodeGen)
+# En la Mac:  brew install xcodegen  &&  cd iosApp && xcodegen generate
+name: iosApp
+options:
+  bundleIdPrefix: com.tatanstudios
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  # Notificaciones push (Swift Package Manager). En Android va por Gradle.
+  OneSignal:
+    url: https://github.com/OneSignal/OneSignal-XCFramework
+    from: 5.0.0
+settings:
+  base:
+    MARKETING_VERSION: "3.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""   # Poner aquí tu Team ID de Apple
+targets:
+  iosApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: iosApp
+    dependencies:
+      - package: OneSignal
+        product: OneSignalFramework
+      - package: OneSignal
+        product: OneSignalInAppMessages
+    # capacidad "Push Notifications" (Xcode cambia a production al exportar para App Store)
+    entitlements:
+      path: iosApp/iosApp.entitlements
+      properties:
+        aps-environment: development
+    info:
+      path: iosApp/Info.plist
+      properties:
+        CFBundleDisplayName: Astro Pollo
+        # recibir notificaciones en segundo plano
+        UIBackgroundModes: [remote-notification]
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CADisableMinimumFrameDurationOnPhone: true
+        # permisos de ubicación (mapa para registrar direcciones)
+        NSLocationWhenInUseUsageDescription: "Astro Pollo usa tu ubicación para registrar la dirección de entrega."
+        # El servidor usa HTTP por IP (165.227.196.71) y iOS no admite excepciones por IP:
+        # se permite HTTP en general. Cuando el backend tenga dominio con HTTPS, borrar esto.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tatanstudios.astropollocliente
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        OTHER_LDFLAGS: ["$(inherited)", "-framework", "ComposeApp"]
+        FRAMEWORK_SEARCH_PATHS:
+          - "$(inherited)"
+          - "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+    preBuildScripts:
+      - name: Compilar Kotlin (shared)
+        basedOnDependencyAnalysis: false
+        script: |
+          if [ "YES" = "$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED" ]; then
+            echo "Omitiendo Gradle: OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED=YES"
+            exit 0
+          fi
+          # Xcode no hereda JAVA_HOME: usar el JDK de Android Studio si no hay otro
+          if [ -z "$JAVA_HOME" ] && [ -d "/Applications/Android Studio.app/Contents/jbr/Contents/Home" ]; then
+            export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+          fi
+          cd "$SRCROOT/.."
+          sh ./gradlew :shared:embedAndSignAppleFrameworkForXcode
