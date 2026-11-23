@@ -68,6 +68,9 @@ cd iosApp && xcodegen generate
 open iosApp.xcodeproj
 ```
 
+Bundle ID de iOS: `com.tatanstudios.astropollo` (el de la app ya publicada en App Store; en Android
+el `applicationId` es `com.tatanstudios.astropollocliente`).
+
 En Xcode: elegir tu Team en *Signing & Capabilities* y ejecutar. La fase de build llama a
 `./gradlew :shared:embedAndSignAppleFrameworkForXcode`, que compila `ComposeApp.framework`.
 

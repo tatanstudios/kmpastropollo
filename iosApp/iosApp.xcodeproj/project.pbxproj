@@ -318,7 +318,7 @@
 					"-framework",
 					ComposeApp,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.astropollocliente;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.astropollo;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -346,7 +346,7 @@
 					"-framework",
 					ComposeApp,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.astropollocliente;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tatanstudios.astropollo;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
