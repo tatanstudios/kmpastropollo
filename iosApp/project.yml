@@ -14,7 +14,8 @@ settings:
   base:
     MARKETING_VERSION: "3.0.0"
     CURRENT_PROJECT_VERSION: "1"
-    DEVELOPMENT_TEAM: ""   # Poner aquí tu Team ID de Apple
+    DEVELOPMENT_TEAM: "42VSDQG6FV"   # Team ID de Apple (Tatan Studios)
+    CODE_SIGN_STYLE: Automatic
 targets:
   iosApp:
     type: application
@@ -26,11 +27,15 @@ targets:
         product: OneSignalFramework
       - package: OneSignal
         product: OneSignalInAppMessages
+      # extensión de notificaciones (imágenes, badges, entregas confirmadas); se embebe en la app
+      - target: OneSignalNotificationServiceExtension
     # capacidad "Push Notifications" (Xcode cambia a production al exportar para App Store)
+    # App Group: OneSignal comparte datos entre la app y la extensión
     entitlements:
       path: iosApp/iosApp.entitlements
       properties:
         aps-environment: development
+        com.apple.security.application-groups: [group.com.tatanstudios.astropollo.onesignal]
     info:
       path: iosApp/Info.plist
       properties:
@@ -69,3 +74,30 @@ targets:
           fi
           cd "$SRCROOT/.."
           sh ./gradlew :shared:embedAndSignAppleFrameworkForXcode
+
+  # Notification Service Extension de OneSignal (mismo Bundle ID que tenía la app anterior)
+  OneSignalNotificationServiceExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: OneSignalNotificationServiceExtension
+    dependencies:
+      - package: OneSignal
+        product: OneSignalExtension
+    entitlements:
+      path: OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.tatanstudios.astropollo.onesignal]
+    info:
+      path: OneSignalNotificationServiceExtension/Info.plist
+      properties:
+        CFBundleDisplayName: OneSignalNotificationServiceExtension
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.usernotifications.service
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).NotificationService
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.tatanstudios.astropollo.OneSignalNotificationServiceExtension
+        "EXCLUDED_ARCHS[sdk=iphonesimulator*]": x86_64
