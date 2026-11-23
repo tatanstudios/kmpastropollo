@@ -44,14 +44,12 @@ targets:
         CADisableMinimumFrameDurationOnPhone: true
         # permisos de ubicación (mapa para registrar direcciones)
         NSLocationWhenInUseUsageDescription: "Astro Pollo usa tu ubicación para registrar la dirección de entrega."
-        # El servidor usa HTTP por IP (165.227.196.71) y iOS no admite excepciones por IP:
-        # se permite HTTP en general. Cuando el backend tenga dominio con HTTPS, borrar esto.
-        NSAppTransportSecurity:
-          NSAllowsArbitraryLoads: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tatanstudios.astropollocliente
         ENABLE_USER_SCRIPT_SANDBOXING: NO
+        # Kotlin solo compila iosArm64 + iosSimulatorArm64 (no hay iosX64)
+        "EXCLUDED_ARCHS[sdk=iphonesimulator*]": x86_64
         OTHER_LDFLAGS: ["$(inherited)", "-framework", "ComposeApp"]
         FRAMEWORK_SEARCH_PATHS:
           - "$(inherited)"

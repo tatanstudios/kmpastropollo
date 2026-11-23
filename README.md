@@ -71,9 +71,8 @@ open iosApp.xcodeproj
 En Xcode: elegir tu Team en *Signing & Capabilities* y ejecutar. La fase de build llama a
 `./gradlew :shared:embedAndSignAppleFrameworkForXcode`, que compila `ComposeApp.framework`.
 
-> El servidor usa **HTTP por IP** y iOS no permite excepciones de ATS por IP, por eso `project.yml`
-> tiene `NSAllowsArbitraryLoads`. Apple puede pedir justificación al publicar: lo ideal es poner
-> un dominio con HTTPS al backend y quitar esa excepción.
+> El servidor de producción usa HTTPS, así que la app no tiene excepciones de ATS
+> (`NSAllowsArbitraryLoads`). Para probar contra el servidor local por HTTP habría que añadirla temporalmente.
 
 ## Pruebas
 
