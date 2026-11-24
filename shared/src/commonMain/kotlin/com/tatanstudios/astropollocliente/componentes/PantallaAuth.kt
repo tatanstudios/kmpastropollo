@@ -46,6 +46,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -159,6 +161,7 @@ fun CampoAuth(
     ayuda: String? = null,
 ) {
     var visible by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
     OutlinedTextField(
         value = valor,
         onValueChange = { if (it.length <= maxLength) onCambio(it) },
@@ -180,7 +183,14 @@ fun CampoAuth(
             keyboardType = if (esPassword) KeyboardType.Password else keyboardType,
             imeAction = imeAction
         ),
-        keyboardActions = KeyboardActions(onAny = { onIme() }),
+        keyboardActions = KeyboardActions(onAny = {
+            if (imeAction == ImeAction.Next) {
+                focusManager.moveFocus(FocusDirection.Down)
+            } else {
+                focusManager.clearFocus()
+            }
+            onIme()
+        }),
         singleLine = true,
         shape = RoundedCornerShape(14.dp),
         colors = OutlinedTextFieldDefaults.colors(

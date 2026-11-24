@@ -43,7 +43,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import coil3.compose.LocalPlatformContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.tatanstudios.astropollocliente.extras.TokenManager
@@ -88,6 +90,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.TabRowDefaults.Divider
@@ -140,6 +143,8 @@ fun EnviarOrdenScreen(
     viewModelEnviarOrden: EnviarOrdenFinalViewModel = viewModel { EnviarOrdenFinalViewModel() },
 ) {
     val ctx = LocalPlatformContext.current
+    val focusManager = LocalFocusManager.current
+    val teclado = LocalSoftwareKeyboardController.current
 
     val tokenManager = remember { TokenManager(ctx) }
     val isLoading by viewModel.isLoading.collectAsState(true)
@@ -359,6 +364,11 @@ fun EnviarOrdenScreen(
                             modifier = Modifier.fillMaxWidth(),
                             minLines = 2,
                             maxLines = 4,
+                            keyboardOptions = KeyboardOptions(
+                                capitalization = KeyboardCapitalization.Sentences,
+                                imeAction = ImeAction.Done,
+                            ),
+                            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                             shape = RoundedCornerShape(14.dp),
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = AppColors.colorLetraRoja,
@@ -473,6 +483,8 @@ fun EnviarOrdenScreen(
                                 value = textoCuponEscrito,
                                 onValueChange = { textoCuponEscrito = if (it.length <= 100) it else it.take(100) },
                                 singleLine = true,
+                                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                                keyboardActions = KeyboardActions(onDone = { teclado?.hide() }),
                                 placeholder = { Text("Escribe tu cupón") },
                                 shape = RoundedCornerShape(14.dp),
                                 colors = OutlinedTextFieldDefaults.colors(
