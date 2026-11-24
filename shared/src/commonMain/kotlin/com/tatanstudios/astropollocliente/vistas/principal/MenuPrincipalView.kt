@@ -549,8 +549,7 @@ private fun TarjetaPopular(nombre: String, precio: String, imagenUrl: String?, o
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(88.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(AppColors.colorRedondeadoGris),
+                    .clip(RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (imagenUrl != null) {

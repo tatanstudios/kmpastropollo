@@ -120,8 +120,7 @@ fun InfoProductoHistorialScreen(navController: NavHostController, _idproducto: I
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(200.dp)
-                                    .clip(RoundedCornerShape(14.dp))
-                                    .background(AppColors.colorRedondeadoGris),
+                                    .clip(RoundedCornerShape(14.dp)),
                                 contentAlignment = Alignment.Center
                             ) {
                                 AsyncImage(

@@ -464,8 +464,7 @@ private fun ItemCarritoCard(
             Box(
                 modifier = Modifier
                     .size(72.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(AppColors.colorRedondeadoGris),
+                    .clip(RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (p.utilizaImagen == 1 && !p.imagen.isNullOrBlank()) {

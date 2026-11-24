@@ -64,8 +64,7 @@ fun EncabezadoProducto(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(210.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(AppColors.colorRedondeadoGris),
+                    .clip(RoundedCornerShape(16.dp)),
                 contentAlignment = Alignment.Center,
             ) {
                 AsyncImage(

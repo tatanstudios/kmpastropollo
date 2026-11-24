@@ -259,8 +259,7 @@ internal fun FilaResultadoBusqueda(producto: ModeloProductoBuscable, onClick: ()
             Box(
                 modifier = Modifier
                     .size(64.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(AppColors.colorRedondeadoGris),
+                    .clip(RoundedCornerShape(10.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (imagenUrl != null) {

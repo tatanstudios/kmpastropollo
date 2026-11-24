@@ -201,8 +201,7 @@ internal fun ImagenProductoHistorial(utilizaImagen: Int, imagen: String?, tamano
     Box(
         modifier = Modifier
             .size(tamano)
-            .clip(RoundedCornerShape(12.dp))
-            .background(AppColors.colorRedondeadoGris),
+            .clip(RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.Center
     ) {
         if (utilizaImagen == 1 && !imagen.isNullOrBlank()) {
