@@ -208,6 +208,9 @@ fun EnviarOrdenScreen(
     var modalTituloStringRedireccionar by remember { mutableStateOf("") }
     var modalMensajeStringRedireccionar by remember { mutableStateOf("") }
 
+    // EL CARRITO YA NO EXISTE (p. ej. cambió a una dirección de otro restaurante y se vació)
+    var showModalCarritoVacio by remember { mutableStateOf(false) }
+
     var idonesignal by remember { mutableStateOf("") }
     val scope = rememberCoroutineScope() // Crea el alcance de coroutine
 
@@ -527,6 +530,18 @@ fun EnviarOrdenScreen(
             }
 
             // === Modales y Loadings globales ===
+            if (showModalCarritoVacio) {
+                CustomModal1BotonTitulo(
+                    showModalCarritoVacio,
+                    "Tu carrito está vacío",
+                    "Al cambiar tu dirección de entrega, el pedido pasa a otro restaurante con su propio menú, por eso se vació tu carrito. Agrega de nuevo los productos que quieras desde el menú.",
+                    onDismiss = {
+                        showModalCarritoVacio = false
+                        navController.popBackStack()
+                    }
+                )
+            }
+
             if (showModal1Boton) {
                 CustomModal1BotonTitulo(
                     showModal1Boton,
@@ -614,12 +629,8 @@ fun EnviarOrdenScreen(
             }
             3 -> {
                 // CARRITO NO ENCONTRADO
-                CustomToasty(
-                    ctx,
-                    stringResource(Res.string.error_reintentar_de_nuevo),
-                    ToastType.ERROR
-                )
-                navController.popBackStack()
+                // (se vacía al cambiar a una dirección de otro restaurante): aviso claro y regresa al carrito
+                showModalCarritoVacio = true
             }
             else -> {
                 CustomToasty(

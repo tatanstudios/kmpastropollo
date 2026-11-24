@@ -387,8 +387,8 @@ fun ProductoItemCard(
                             placeholder = painterResource(Res.drawable.spinloading),
                             error = painterResource(Res.drawable.camaradefecto),
                         contentDescription = producto.nombre,
-                        contentScale = ContentScale.Fit,
-                        modifier = Modifier.fillMaxSize()
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize().clip(RoundedCornerShape(12.dp))
                     )
                 } else {
                     Box(

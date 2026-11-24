@@ -28,6 +28,12 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,10 +73,19 @@ fun EncabezadoProducto(
                     .clip(RoundedCornerShape(16.dp)),
                 contentAlignment = Alignment.Center,
             ) {
+                // la imagen toma su proporción real para que las esquinas redondeadas se vean sin recortarla
+                var proporcion by remember(imagenUrl) { mutableStateOf<Float?>(null) }
                 AsyncImage(
                     model = ImageRequest.Builder(ctx).data(imagenUrl).crossfade(true).build(),
                     contentDescription = nombre,
-                    modifier = Modifier.fillMaxWidth().height(210.dp).padding(8.dp),
+                    onSuccess = { estado ->
+                        val tam = estado.painter.intrinsicSize
+                        if (tam.width > 0f && tam.height > 0f) proporcion = tam.width / tam.height
+                    },
+                    modifier = proporcion?.let {
+                        Modifier.heightIn(max = 210.dp).aspectRatio(it, matchHeightConstraintsFirst = true)
+                            .clip(RoundedCornerShape(16.dp))
+                    } ?: Modifier.fillMaxWidth().height(210.dp),
                     contentScale = ContentScale.Fit,
                     placeholder = painterResource(Res.drawable.spinloading),
                     error = painterResource(Res.drawable.camaradefecto),

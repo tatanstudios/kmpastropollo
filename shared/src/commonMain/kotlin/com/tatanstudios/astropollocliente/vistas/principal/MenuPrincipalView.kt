@@ -439,6 +439,9 @@ private fun CarruselBanners(
 ) {
     val ctx = LocalPlatformContext.current
     val pagerState = rememberPagerState(pageCount = { banners.size })
+    // proporción real de las imágenes (ancho/alto); se toma de la primera que carga para no recortarlas
+    var proporcion by remember { mutableStateOf(16f / 9f) }
+    var proporcionLeida by remember { mutableStateOf(false) }
 
     if (banners.size > 1) {
         LaunchedEffect(pagerState) {
@@ -468,12 +471,18 @@ private fun CarruselBanners(
                 placeholder = painterResource(Res.drawable.spinloading),
                 error = painterResource(Res.drawable.camaradefecto),
                 contentDescription = banner.nombre,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
+                onSuccess = { estado ->
+                    val tam = estado.painter.intrinsicSize
+                    if (!proporcionLeida && tam.width > 0f && tam.height > 0f) {
+                        proporcion = tam.width / tam.height
+                        proporcionLeida = true
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(16f / 9f)
+                    .aspectRatio(proporcion)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(AppColors.colorRedondeadoGris)
                     .clickable(enabled = abreProducto) { onAbrirProducto(banner.idProducto) }
             )
         }
